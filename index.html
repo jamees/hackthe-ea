@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>eagent :: terminal node</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      overflow-x: hidden;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    .terminal {
+      padding: 20px;
+      max-width: 800px;
+      margin: 60px auto;
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid #00ff00;
+      box-shadow: 0 0 12px #00ff00;
+    }
+    .prompt {
+      margin: 10px 0;
+    }
+    pre {
+      background-color: #002200;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    a {
+      color: #00ff00;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="matrixRain"></canvas>
+
+<div class="terminal">
+  <div class="prompt">> eagent booting node :: 10.2.91.44 :: node-73a9</div>
+  <div class="prompt">> [OK] systems stable</div>
+
+  <h2>./scripts</h2>
+  <p class="prompt">Retrieve credentials with this tool:</p>
+  <div class="prompt">$ ./unlock_credentials.sh</div>
+  <pre>#!/bin/bash
+echo "[eagent] running credential extractor..."
+
+# Fake environment simulation
+sleep 1
+fake_env_var="obfuscate_$(date +%s)"
+eval $fake_env_var=0xdeadbeef
+
+# Decoded credentials
+u=$(echo "cmViZWw=" | base64 --decode | rev)
+p=$(echo "dW5kZXJncm91bmQ=" | base64 --decode | rev | rev)
+
+# Noise and distraction
+for i in {1..3}; do echo "analyzing memory bank $i..."; sleep 0.5; done
+
+# Result
+echo "user: $u"
+echo "pass: $p"
+</pre>
+
+  <p class="prompt">Then proceed to <a href="login.html">/node/login</a></p>
+</div>
+
+<script>
+  const canvas = document.getElementById('matrixRain');
+  const ctx = canvas.getContext('2d');
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  const letters = '01▓▒░▌▐▄▀'.split('');
+  const fontSize = 14;
+  const columns = Math.floor(canvas.width / fontSize);
+  const drops = Array(columns).fill(1);
+
+  function drawMatrix() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#0f0';
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+
+  setInterval(drawMatrix, 33);
+</script>
+
+</body>
+</html>

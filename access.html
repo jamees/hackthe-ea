@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>eagent :: access granted</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      margin: 0;
+      padding: 20px;
+    }
+    .terminal {
+      border: 1px solid #00ff00;
+      padding: 20px;
+      background-color: #000;
+      width: 90%;
+      max-width: 800px;
+      margin: 50px auto;
+      box-shadow: 0 0 10px #00ff00;
+    }
+    .prompt {
+      color: #00ff00;
+      margin: 10px 0;
+    }
+    code {
+      background-color: #002200;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="prompt" id="auth-status">> verifying credentials...</div>
+    <div class="prompt" id="user-log"></div>
+    <div class="prompt" id="access-token" style="display:none;">> session-token: <code>9x-77b2-hack-core</code></div>
+  </div>
+
+  <script>
+    const user = sessionStorage.getItem("lastUsernameAttempt");
+    const pass = sessionStorage.getItem("lastPasswordAttempt");
+
+    const userLog = document.getElementById("user-log");
+    const token = document.getElementById("access-token");
+    const status = document.getElementById("auth-status");
+
+    if (user === "rebel" && pass === "underground") {
+      status.textContent = "> access granted :: eagent core authenticated";
+      userLog.textContent = "> user confirmed: " + user;
+      token.style.display = "block";
+    } else {
+      window.location.href = "error.html";
+    }
+  </script>
+</body>
+</html>

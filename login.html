@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>eagent :: login</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      margin: 0;
+      padding: 20px;
+    }
+    .terminal {
+      border: 1px solid #00ff00;
+      padding: 20px;
+      background-color: #000;
+      width: 90%;
+      max-width: 800px;
+      margin: 50px auto;
+      box-shadow: 0 0 10px #00ff00;
+    }
+    .prompt {
+      color: #00ff00;
+      margin: 10px 0;
+    }
+    input, button {
+      background: none;
+      border: none;
+      border-bottom: 1px solid #00ff00;
+      color: #00ff00;
+      padding: 5px;
+      font-family: monospace;
+      font-size: 16px;
+      margin-top: 5px;
+      outline: none;
+    }
+    button:hover {
+      cursor: pointer;
+      background-color: #00ff00;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="prompt">> secure login node initiated...</div>
+    <form onsubmit="return verifyLogin(event)">
+      <div class="prompt">username: <input type="text" id="username" autocomplete="off" /></div>
+      <div class="prompt">password: <input type="password" id="password" /></div>
+      <div class="prompt"><button type="submit">access</button></div>
+    </form>
+    <div class="prompt" id="message"></div>
+  </div>
+
+  <script>
+    let attempts = parseInt(localStorage.getItem("loginAttempts")) || 0;
+
+    // Redirigir si ya hay 3 o más intentos fallidos
+    if (attempts >= 3) {
+      window.location.href = "error.html";
+    }
+
+    function verifyLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      const msg = document.getElementById('message');
+
+      sessionStorage.setItem("lastUsernameAttempt", user);
+      sessionStorage.setItem("lastPasswordAttempt", pass);
+
+      if (user === "rebel" && pass === "underground") {
+        localStorage.setItem("loginAttempts", "0");
+        window.location.href = "access.html";
+      } else {
+        attempts++;
+        localStorage.setItem("loginAttempts", attempts);
+        if (attempts >= 3) {
+          window.location.href = "error.html";
+        } else {
+          msg.innerHTML = "> attempt " + attempts + "/3 failed :: unauthorized";
+        }
+      }
+    }
+  </script>
+</body>
+</html>
