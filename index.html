@@ -62,7 +62,7 @@ fake_env_var="obfuscate_$(date +%s)"
 eval $fake_env_var=0xdeadbeef
 
 # Decoded credentials
-u=$(echo "cmViZWw=" | base64 --decode | rev)
+u=$(echo "cmViZWw=" | base64 --decode | rev | rev)
 p=$(echo "dW5kZXJncm91bmQ=" | base64 --decode | rev | rev)
 
 # Noise and distraction
